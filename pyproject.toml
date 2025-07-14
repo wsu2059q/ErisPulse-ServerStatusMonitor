@@ -1,0 +1,18 @@
+[project]
+name = "ErisPulse-ServerStatusMonitor"
+version = "1.1.0"
+description = "ErisPulse 系统信息查询模块"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [ { name = "wsu2059q", email = "wsu2059@qq.com" } ]
+# 可以直接依赖对应的ErisPulse模块包名
+dependencies = [
+    "ErisPulse-SystemStatus"
+]
+
+[project.urls]
+"homepage" = "https://github.com/wsu2059q/ErisPulse-ServerStatusMonitor"
+
+[project.entry-points]
+"erispulse.module" = { "ServerStatusMonitor" = "ServerStatusMonitor:Main" }
