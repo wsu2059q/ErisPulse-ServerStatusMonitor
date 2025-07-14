@@ -1,6 +1,6 @@
 [project]
 name = "ErisPulse-ServerStatusMonitor"
-version = "1.1.0"
+version = "1.1.1"
 description = "ErisPulse 系统信息查询模块"
 readme = "README.md"
 requires-python = ">=3.9"
