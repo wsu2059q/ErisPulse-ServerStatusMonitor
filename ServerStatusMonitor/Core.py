@@ -25,16 +25,28 @@ class Main:
             return
         else:
             return
+            
     async def _send_status(self, data):
         try:
             status = sdk.SystemStatus.get()
             
             detail_type = data.get("detail_type", "private")
-            datail_id = data.get("user_id") if detail_type == "private" else data.get("group_id")
+            detail_id = data.get("user_id") if detail_type == "private" else data.get("group_id")
             adapter_name = data.get("self", {}).get("platform", None)
+            
             if adapter_name:
                 adapter = getattr(self.sdk.adapter, adapter_name)
-                await adapter.Send.To("user" if detail_type == "private" else "group", datail_id).Markdown(self._format_status(status))
+                message = self._format_status(status)
+                send_to = adapter.Send.To("user" if detail_type == "private" else "group", detail_id)
+                
+                # 先发送 Markdown，如果不支持则为 Text
+                if hasattr(send_to, 'Markdown'):
+                    await send_to.Markdown(message)
+                elif hasattr(send_to, 'Text'):
+                    await send_to.Text(message)
+                else:
+                    self.logger.error(f"适配器 {adapter_name} 既不支持 Markdown 也不支持 Text 发送方法")
+                    
         except Exception as e:
             self.logger.error(f"发送服务器状态失败: {e}")
 
